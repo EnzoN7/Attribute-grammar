@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e62690da-6445-4e13-870a-0446981b8bc9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.cupAntBuilder.launch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input1ok.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input2ko.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input3ko.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input4ok.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lexer.jflex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/parser.cup" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/semantics.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/Driver.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/Lexer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/Parser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/Block.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/BlockFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/SemanticsUndefinedException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/AbstractAccess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/AbstractArray.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/AbstractConversion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/AbstractField.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/AbstractIdentifier.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/AbstractPointer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/BinaryExpression.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/BinaryOperator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/ConditionalExpression.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/Couple.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/Expression.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/First.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/FunctionCall.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/Second.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/Sequence.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/UnaryExpression.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/UnaryOperator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/accessible/AccessibleConversion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/accessible/AccessibleExpression.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/accessible/AddressAccess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/accessible/ArrayAccess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/accessible/ConstantAccess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/accessible/FieldAccess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/accessible/IdentifierAccess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/accessible/ParameterAccess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/accessible/PointerAccess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/accessible/VariableAccess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/allocation/ArrayAllocation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/allocation/PointerAllocation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/assignable/ArrayAssignment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/assignable/AssignableConversion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/assignable/AssignableExpression.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/assignable/FieldAssignment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/assignable/PointerAssignment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/assignable/VariableAssignment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/value/BooleanValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/value/CharacterValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/value/FloatingValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/value/IntegerValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/value/NullValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/value/StringValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/expression/value/Value.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/Assignment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/Conditional.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/Instruction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/Iteration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/Printer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/Repetition.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/Return.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/declaration/ConstantDeclaration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/declaration/FunctionDeclaration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/declaration/ParameterDeclaration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/declaration/TypeDeclaration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/instruction/declaration/VariableDeclaration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/scope/Declaration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/scope/HierarchicalScope.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/scope/Scope.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/scope/SymbolTable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/ArrayType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/AtomicType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/CoupleType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/EnumerationType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/FunctionType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/NamedType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/PartialArrayType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/PartialPointerType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/PartialType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/PointerType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/RecordType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/SequenceType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/Type.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/declaration/FieldDeclaration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/ast/type/declaration/LabelDeclaration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/block/sym.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/mjava/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/tam/ast/Fragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/tam/ast/Library.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/tam/ast/Register.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/tam/ast/TAMFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/tam/ast/TAMInstruction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/tam/ast/impl/FragmentImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/tam/ast/impl/TAMFactoryImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/tam/ast/impl/TAMInstructionImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/tam/ast/impl/TAMInstructionKind.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/util/BlockSemanticsError.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/util/Logger.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/n7/stl/util/Pair.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/JFlex.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/commons-lang3-3.7.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/commons-text-1.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/java-cup-11b-runtime.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/java-cup-11b.jar" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2666zjv7O4NbybdX5EFxIAXM9qx" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\alex3\Documents\Repositories\STDLproject\semantics" />
+      <recent name="C:\Users\alex3\Documents\Repositories\STDLproject\semantics\src" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e62690da-6445-4e13-870a-0446981b8bc9" name="Changes" comment="" />
+      <created>1646731954267</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1646731954267</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
