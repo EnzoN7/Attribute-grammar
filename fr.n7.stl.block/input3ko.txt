@@ -1,4 +1,0 @@
-test {
-	int i = 1;
-	float i = 0;
-}
