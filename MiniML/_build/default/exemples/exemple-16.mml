@@ -1,0 +1,4 @@
+let ptr =
+    fun x -> ref x
+in
+    (ptr) (false)

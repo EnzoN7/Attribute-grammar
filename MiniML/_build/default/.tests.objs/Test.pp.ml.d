@@ -1,1 +1,1 @@
-Test.pp.ml: Inline_test_config MiniML Ppx_inline_test_lib Semantics
+Test.pp.ml: Inline_test_config MiniML Ppx_inline_test_lib Semantics Types

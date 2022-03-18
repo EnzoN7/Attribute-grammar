@@ -3,7 +3,6 @@ open Semantics
 
 let debug = ref false;
 
-(* ..................................................................*)
 type typeType =
   | ErrorType                             (* Échec du typage *)
 
@@ -24,7 +23,6 @@ type typeType =
 
 ;;
 
-(* ..................................................................*)
 (* newVariable : typeType                                            *)
 (* Cree une variable de type, differente des précedentes             *)
 (* dont la valeur initiale (modifiable) est : Unknown                *)
@@ -90,14 +88,12 @@ let rec normalize t =
        ErrorType
 ;;
 
-(* ..................................................................  *)
 (* unify : typeType -> typeType                                        *)
 (*     -> typeType * bool                                              *)
 (* unify permet de comparer 2 types (en valuant eventuellement les     *)
 (* variables de types presentes dans chacun des 2). La valeur renvoyee *)
 (* est le premier type et true s'il y a correspondance                 *)
 (* ErrorType et false sinon                                            *)
-(* ..................................................................  *)
 let unify t1 t2 =
   (* test de presence de v dans t : pour eviter une boucle infinie dans l'unification *)
   let rec occur_check v t =
@@ -187,12 +183,10 @@ let unify t1 t2 =
   (normalize t),r
 ;;
 
-(* ..................................................................*)
 (* type_of_expr Ast.ast -> environment -> typeType                   *)
 (*  calcule le type de l'expression dans un environnement de types   *)
 (* Chaque expression est traitee par une fonction ruleXXX traitant   *)
 (* a la regle d'inference associee                                   *)
-(* ..................................................................*)
 let rec type_of_expr expr env =
   let aux expr env =
     if ( ! debug ) then
@@ -224,22 +218,18 @@ let rec type_of_expr expr env =
   (normalize (aux expr env))
 
   and
-    (* ..................................................................*)
     ruleBoolean = BooleanType
 
   and
-    (* ..................................................................*)
     ruleInteger = IntegerType
 
   and
-    (* ..................................................................*)
     ruleAccess env name =
     (match (lookforEnv name env) with
      | NotFound -> ErrorType
      | (Found t) -> t)
 
   and
-    (* ..................................................................*)
     ruleUnary env op expr =
     (match op with
      | Negation ->
@@ -254,7 +244,6 @@ let rec type_of_expr expr env =
     )
 
   and
-    (* ..................................................................*)
     ruleBinary env op left right =
     let tleft = (type_of_expr left env) in
     let tright = (type_of_expr right env) in
@@ -271,94 +260,120 @@ let rec type_of_expr expr env =
         let _, url = unify tleft BooleanType in
         let _, urr = unify tright BooleanType in
         (if (url && urr) then BooleanType else ErrorType)
-    (*
-    | _ -> ErrorType)
-     *)
     )
 
   and
-    (* ..................................................................*)
+  
     ruleLet env ident bvalue bin =
-    let typeident = (type_of_expr bvalue env) in
-    (*    (print_endline ((string_of_ast bvalue) ^ " -> " ^ (string_of_type typeident)));
-    (print_endline ((string_of_ast bin))); *)
-    (type_of_expr bin ((ident,typeident)::env))
+      let typeident = (type_of_expr bvalue env)
+      in
+        type_of_expr bin ((ident,typeident)::env)
 
   and
-    (* ..................................................................*)
     ruleIf env cond ethen eelse =
-    let tcond = (type_of_expr cond env) in
-    let tthen = (type_of_expr ethen env) in
-    let telse = (type_of_expr eelse env) in
-    let _,urc = unify tcond BooleanType in
-    let ut,ur = unify tthen telse in
-    (if (urc && ur) then ut else ErrorType)
+      let tcond = (type_of_expr cond env)
+      in
+        let tthen = (type_of_expr ethen env)
+        in
+          let telse = (type_of_expr eelse env)
+          in
+            let _,matching = unify tcond BooleanType
+            in
+              let _,matching2 = unify tthen telse
+              in
+                if (matching && matching2) then
+                  tthen
+                else
+                  ErrorType
 
   and
     ruleFunction _env _par _body =
-      let newEnv = (_par,UnknownType)::_env
+      let typevar = newVariable ()
       in
-        let tbody = (type_of_expr _body newEnv)
+        let tbody = type_of_expr _body ((_par,typevar)::_env)
         in
-          let (_,matching) = unify tbody (FunctionType (UnknownType,tbody))
+          FunctionType (typevar,tbody)
+
+  and
+    ruleCall _env _fct _par =
+      let tfct = type_of_expr _fct _env
+      in
+        let tpar = type_of_expr _par _env
+        in
+          let typevarpar = newVariable ()
           in
-            if matching then 
-              tbody
+            let typevarres = newVariable ()
+            in
+              let _,matching = unify tfct (FunctionType (typevarpar,typevarres))
+              in
+                let _,matching2 = unify tpar typevarpar
+                in
+                  if (matching && matching2) then
+                    typevarres
+                  else
+                    ErrorType
+
+  and
+    ruleLetrec env ident bvalue bin =
+      let typevar = newVariable ()
+      in
+        let tbvalue = type_of_expr bvalue ((ident,typevar)::env)
+        in
+          let _,matching = unify typevar tbvalue
+          in
+            if matching then
+                type_of_expr bin ((ident,tbvalue)::env)
             else
               ErrorType
 
   and
-    ruleCall _env _fct _par =
-      let tfct = (type_of_expr _fct _env)
-      in
-        match tfct with
-        | FunctionType (tau1,_) ->
-          let tpar = (type_of_expr _par _env)
-          in
-            let (_,matching) = unify tau1 tpar
-            in
-              if matching then
-                tpar
-              else
-                ErrorType
-        | _ -> ErrorType
-
-  and
-    (* ..................................................................*)
-    ruleLetrec env ident bvalue bin =
-    let typevar = newVariable ()
-    in
-      let typeident = (type_of_expr bvalue ((ident,typevar)::env))
-      in
-        let _,ur = unify typevar typeident
-        in
-          if ur then
-            type_of_expr bin ((ident,typeident) :: env)
-          else
-            ErrorType
-
-  and
-    (* ..................................................................*)
     ruleUnit = UnitType
 
   and
-    ruleRef _env _expr = ErrorType
+    ruleRef _env _expr =
+      let texpr = (type_of_expr _expr _env)
+      in
+        ReferenceType texpr
 
   and
-    (* ...............A COMPLETER .......................................*)
-    ruleRead _env _expr = ErrorType
+    ruleRead _env _expr =
+      let texpr = (type_of_expr _expr _env)
+      in
+        match texpr with
+        | ReferenceType t -> t
+        | _ -> ErrorType
 
   and
-    (* ...............A COMPLETER .......................................*)
-    ruleWrite _env _left _right = ErrorType
+    ruleWrite _env _left _right =
+      let tleft = (type_of_expr _left _env)
+      in
+        match tleft with
+        | ReferenceType t ->
+            let tright = (type_of_expr _right _env)
+            in
+              let _,matching = unify t tright
+              in
+                if matching then
+                  UnitType
+                else
+                  ErrorType
+        | _ -> ErrorType
 
   and
-    (* ...............A COMPLETER .......................................*)
-    ruleSequence _env _left _right = ErrorType
+    ruleSequence _env _left _right =
+      let tleft = (type_of_expr _left _env)
+      in
+        match tleft with
+        | UnitType -> type_of_expr _right _env
+        | _ -> ErrorType
 
   and
-    (* ...............A COMPLETER .......................................*)
-    ruleWhile _env _cond _body = ErrorType
+    ruleWhile _env _cond _body =
+      let tcond = type_of_expr _cond _env
+      in
+        match tcond with
+        | BooleanType -> type_of_expr _body _env
+        | _ -> ErrorType
 
 (* ...........fin des regles d'inference..........................................*)
 ;;
