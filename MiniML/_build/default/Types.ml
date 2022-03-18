@@ -225,23 +225,21 @@ let rec type_of_expr expr env =
 
   and
     ruleAccess env name =
-    (match (lookforEnv name env) with
-     | NotFound -> ErrorType
-     | (Found t) -> t)
+      match (lookforEnv name env) with
+      | NotFound -> ErrorType
+      | Found t -> t
 
   and
     ruleUnary env op expr =
-    (match op with
-     | Negation ->
-        let texpr = (type_of_expr expr env) in
-        let _, ure = unify texpr BooleanType in
-        (if (ure) then BooleanType else ErrorType)
-     | Opposite ->
-        let texpr = (type_of_expr expr env) in
-        let _, ure = unify texpr IntegerType in
-        (if (ure) then IntegerType else ErrorType)
-    (* | _ -> ErrorType *)
-    )
+      match op with
+      | Negation ->
+          let texpr = (type_of_expr expr env) in
+          let _, ure = unify texpr BooleanType in
+          (if (ure) then BooleanType else ErrorType)
+      | Opposite ->
+          let texpr = (type_of_expr expr env) in
+          let _, ure = unify texpr IntegerType in
+          (if (ure) then IntegerType else ErrorType)
 
   and
     ruleBinary env op left right =
@@ -265,7 +263,7 @@ let rec type_of_expr expr env =
   and
   
     ruleLet env ident bvalue bin =
-      let typeident = (type_of_expr bvalue env)
+      let typeident = type_of_expr bvalue env
       in
         type_of_expr bin ((ident,typeident)::env)
 
@@ -281,7 +279,7 @@ let rec type_of_expr expr env =
             in
               let _,matching2 = unify tthen telse
               in
-                if (matching && matching2) then
+                if matching && matching2 then
                   tthen
                 else
                   ErrorType
@@ -308,7 +306,7 @@ let rec type_of_expr expr env =
               in
                 let _,matching2 = unify tpar typevarpar
                 in
-                  if (matching && matching2) then
+                  if matching && matching2 then
                     typevarres
                   else
                     ErrorType
@@ -322,7 +320,7 @@ let rec type_of_expr expr env =
           let _,matching = unify typevar tbvalue
           in
             if matching then
-                type_of_expr bin ((ident,tbvalue)::env)
+              type_of_expr bin ((ident,tbvalue)::env)
             else
               ErrorType
 
@@ -331,13 +329,13 @@ let rec type_of_expr expr env =
 
   and
     ruleRef _env _expr =
-      let texpr = (type_of_expr _expr _env)
+      let texpr = type_of_expr _expr _env
       in
         ReferenceType texpr
 
   and
     ruleRead _env _expr =
-      let texpr = (type_of_expr _expr _env)
+      let texpr = type_of_expr _expr _env
       in
         match texpr with
         | ReferenceType t -> t
@@ -345,18 +343,18 @@ let rec type_of_expr expr env =
 
   and
     ruleWrite _env _left _right =
-      let tleft = (type_of_expr _left _env)
+      let tleft = type_of_expr _left _env
       in
         match tleft with
         | ReferenceType t ->
-            let tright = (type_of_expr _right _env)
+          let tright = type_of_expr _right _env
+          in
+            let _,matching = unify t tright
             in
-              let _,matching = unify t tright
-              in
-                if matching then
-                  UnitType
-                else
-                  ErrorType
+              if matching then
+                UnitType
+              else
+                ErrorType
         | _ -> ErrorType
 
   and

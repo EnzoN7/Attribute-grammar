@@ -236,15 +236,15 @@ and
 (* .............................................................................*)
 
 ruleIf env cond bthen belse mem =
-  let (cval,cmem) = (value_of_expr (cond,mem) env)
+  let cval,cmem = value_of_expr (cond,mem) env
   in
     match cval with
-    | (BooleanValue rcond) ->
+    | BooleanValue rcond ->
       if rcond then
         value_of_expr (bthen,cmem) env
       else
         value_of_expr (belse,cmem) env
-    | (ErrorValue _) as result -> (result,cmem)
+    | ErrorValue _ as result -> (result,cmem)
     | _ -> ((ErrorValue TypeMismatchError),cmem)
 
 and
@@ -263,16 +263,16 @@ and
 
 (* Appel par valeur *)
 ruleCallByValue env fexpr pexpr mem =
-  let (pval,pmem) = value_of_expr (pexpr,mem) env
+  let pval,pmem = value_of_expr (pexpr,mem) env
   in
     match pval with
-    | (ErrorValue _) as result -> (result,pmem)
+    | ErrorValue _ as result -> (result,pmem)
     | _ ->
-      let (fval,fmem) = value_of_expr (fexpr,pmem) env
+      let fval,fmem = value_of_expr (fexpr,pmem) env
       in
         match fval with
-        | (FrozenValue ((FunctionNode (fpar,fbody)),fenv)) -> (value_of_expr (fbody,fmem) ((fpar,pval)::fenv))
-        | (ErrorValue _) as result -> (result,fmem)
+        | FrozenValue ((FunctionNode (fpar,fbody)),fenv) -> value_of_expr (fbody,fmem) ((fpar,pval)::fenv)
+        | ErrorValue _ as result -> (result,fmem)
         | _ -> ((ErrorValue TypeMismatchError),fmem)
         
 
@@ -283,7 +283,7 @@ and
 (* .............................................................................*)
 
 ruleLetrec env ident bvalue bin mem =
-  (value_of_expr (bin,mem) ((ident,(FrozenValue ((LetrecNode (ident,bvalue,bvalue)),env)))::env))
+  value_of_expr (bin,mem) ((ident,(FrozenValue ((LetrecNode (ident,bvalue,bvalue)),env)))::env)
 
 and
 (* .............................................................................*)
@@ -320,17 +320,17 @@ and
 (* .............................................................................*)
 
 ruleRead _env _expr mem =
-  let (v,m) = value_of_expr (_expr,mem) _env
+  let v,m = value_of_expr (_expr,mem) _env
   in
-      match v with
-      | ErrorValue _ as res -> (res,m)
-      | ReferenceValue refVal ->
-      (
-        match (lookforMem refVal m) with
-        | NotFound -> ((ErrorValue (UnknownReferenceError refVal)),m)
-        | Found v -> (v,m)
-      )
-      | _ -> ((ErrorValue TypeMismatchError),m)
+    match v with
+    | ErrorValue _ as res -> (res,m)
+    | ReferenceValue refVal ->
+    (
+      match (lookforMem refVal m) with
+      | NotFound -> ((ErrorValue (UnknownReferenceError refVal)),m)
+      | Found v -> (v,m)
+    )
+    | _ -> ((ErrorValue TypeMismatchError),m)
 
 and
 (* .............................................................................*)
@@ -339,7 +339,7 @@ and
 (* .............................................................................*)
 
 ruleWrite _env _refexpr _valexpr mem =
-  let (rval,rmem) = value_of_expr (_refexpr,mem) _env
+  let rval,rmem = value_of_expr (_refexpr,mem) _env
   in
     match rval with
     | ErrorValue _ as res -> (res,rmem)
@@ -348,11 +348,10 @@ ruleWrite _env _refexpr _valexpr mem =
       match (lookforMem refVal rmem) with
       | NotFound -> ((ErrorValue (UnknownReferenceError refVal)),rmem)
       | Found _ ->
-          let (vval,vmem) =
-            value_of_expr (_valexpr,rmem) _env
+          let vval,vmem = value_of_expr (_valexpr,rmem) _env
           in
             match vval with
-            | (ErrorValue _) as res -> (res,vmem)
+            | ErrorValue _ as res -> (res,vmem)
             | _ -> (NullValue,(refVal,vval)::vmem)
     )
     | _ -> ((ErrorValue TypeMismatchError),rmem)
@@ -364,12 +363,12 @@ and
 (* .............................................................................*)
 
 ruleSequence env left right mem =
-  let (leftvalue, leftmem) = value_of_expr (left,mem) env
+  let leftvalue, leftmem = value_of_expr (left,mem) env
   in
-      match leftvalue with
-      | ErrorValue _ as result -> (result, leftmem)
-      | NullValue -> (value_of_expr (right, leftmem) env)
-      | _ -> ((ErrorValue TypeMismatchError), leftmem)  
+    match leftvalue with
+    | ErrorValue _ as result -> (result, leftmem)
+    | NullValue -> (value_of_expr (right, leftmem) env)
+    | _ -> ((ErrorValue TypeMismatchError), leftmem)  
 
 and
 (* .............................................................................*)
@@ -378,17 +377,17 @@ and
 (* .............................................................................*)
 
 ruleWhile _env _cond _body mem =
-  let (cval,cmem) = value_of_expr (_cond, mem) _env
+  let cval,cmem = value_of_expr (_cond, mem) _env
   in
     match cval with
     | BooleanValue true ->
-      let (bval,bmem) = value_of_expr (_body, cmem) _env
+      let bval,bmem = value_of_expr (_body, cmem) _env
       in
-        (
-          match bval with
-          | NullValue -> ruleWhile _env _cond _body bmem
-          | _ -> ((ErrorValue TypeMismatchError), bmem)
-        )
+      (
+        match bval with
+        | NullValue -> ruleWhile _env _cond _body bmem
+        | _ -> ((ErrorValue TypeMismatchError), bmem)
+      )
     | BooleanValue false -> (NullValue, cmem)
     | _ -> ((ErrorValue TypeMismatchError), cmem)
 
