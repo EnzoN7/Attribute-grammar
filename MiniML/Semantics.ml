@@ -328,7 +328,7 @@ ruleRead _env _expr mem =
     (
       match (lookforMem refVal m) with
       | NotFound -> ((ErrorValue (UnknownReferenceError refVal)),m)
-      | Found v -> (v,m)
+      | Found fnd -> (fnd,m)
     )
     | _ -> ((ErrorValue TypeMismatchError),m)
 

@@ -1,0 +1,3 @@
+let divide10 =
+    fun q -> 10 / q
+in (divide10) (0)

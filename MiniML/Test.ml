@@ -60,14 +60,23 @@ let%test _ = ( getType (miniML "../../exemples/exemple-15.mml") = BooleanType )
   Autres tests
 *)
 
+let%test _ = ( getValeur (miniML "../../exemples/exemple-09.mml") = (FrozenValue (FunctionNode ("x",AccessNode "x"),[])) )
+let%test _ = ( getType (miniML "../../exemples/exemple-09.mml") = FunctionType (VariableType (ref UnknownType,1),VariableType (ref UnknownType,1)) )
+
+let%test _ = ( getValeur (miniML "../../exemples/exemple-13.mml") = NullValue )
+let%test _ = ( getType (miniML "../../exemples/exemple-13.mml") = UnitType )
+
 let%test _ = ( getValeur (miniML "../../exemples/exemple-16.mml") = ReferenceValue "ref@1" )
 let%test _ = ( getType (miniML "../../exemples/exemple-16.mml") = ReferenceType BooleanType )
 
 let%test _ = ( getValeur (miniML "../../exemples/exemple-17.mml") = ReferenceValue "ref@1" )
 let%test _ = ( getType (miniML "../../exemples/exemple-17.mml") = ReferenceType IntegerType )
 
-let%test _ = ( getValeur (miniML "../../exemples/exemple-09.mml") = (FrozenValue (FunctionNode ("x",AccessNode "x"),[])) )
-let%test _ = ( getType (miniML "../../exemples/exemple-09.mml") = FunctionType (VariableType (ref UnknownType,1),VariableType (ref UnknownType,1)) )
+let%test _ = ( getValeur (miniML "../../exemples/exemple-18.mml") = ErrorValue TypeMismatchError )
+let%test _ = ( getType (miniML "../../exemples/exemple-18.mml") = ErrorType )
 
-let%test _ = ( getValeur (miniML "../../exemples/exemple-13.mml") = NullValue )
-let%test _ = ( getType (miniML "../../exemples/exemple-13.mml") = UnitType )
+let%test _ = ( getValeur (miniML "../../exemples/exemple-19.mml") = ErrorValue (UnknownIdentError ("y")) )
+let%test _ = ( getType (miniML "../../exemples/exemple-19.mml") = ErrorType )
+
+let%test _ = ( getValeur (miniML "../../exemples/exemple-20.mml") = ErrorValue RuntimeError )
+let%test _ = ( getType (miniML "../../exemples/exemple-20.mml") = IntegerType )

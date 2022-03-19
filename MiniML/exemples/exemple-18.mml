@@ -1,0 +1,4 @@
+let double =
+    fun n -> 2 * n
+in
+    (double) (true)
