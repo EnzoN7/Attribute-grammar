@@ -1,10 +1,11 @@
 # dune runtest
 # OCAMLPARAM: unset
-# Workspace root: /home/edimaria/2A/SemantiqueTradLangage/MiniML
-$ /usr/bin/nproc > /tmp/dune198a8e.output 2> /dev/null
+# Workspace root:
+# /home/edimaria/2A/SemantiqueTradLangage/MiniML-Imperative-programming
+$ /usr/bin/nproc > /tmp/dune1439b8.output 2> /dev/null
 # Auto-detected concurrency: 16
 # disable binary cache
-$ /home/edimaria/.opam/4.11.1/bin/ocamlc.opt -config > /tmp/dune6b1740.output
+$ /home/edimaria/.opam/4.11.1/bin/ocamlc.opt -config > /tmp/dunedb7c6e.output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -24,15 +25,16 @@ $ /home/edimaria/.opam/4.11.1/bin/ocamlc.opt -config > /tmp/dune6b1740.output
 #      map
 #        { "DUNE_OCAML_HARDCODED" : "/home/edimaria/.opam/4.11.1/lib"
 #        ; "DUNE_OCAML_STDLIB" : "/home/edimaria/.opam/4.11.1/lib/ocaml"
-#        ; "DUNE_SOURCEROOT" : "/home/edimaria/2A/SemantiqueTradLangage/MiniML"
+#        ; "DUNE_SOURCEROOT" :
+#            "/home/edimaria/2A/SemantiqueTradLangage/MiniML-Imperative-programming"
 #        ; "INSIDE_DUNE" :
-#            "/home/edimaria/2A/SemantiqueTradLangage/MiniML/_build/default"
+#            "/home/edimaria/2A/SemantiqueTradLangage/MiniML-Imperative-programming/_build/default"
 #        ; "OCAMLFIND_IGNORE_DUPS_IN" :
-#            "/home/edimaria/2A/SemantiqueTradLangage/MiniML/_build/install/default/lib"
+#            "/home/edimaria/2A/SemantiqueTradLangage/MiniML-Imperative-programming/_build/install/default/lib"
 #        ; "OCAMLPATH" :
-#            "/home/edimaria/2A/SemantiqueTradLangage/MiniML/_build/install/default/lib"
+#            "/home/edimaria/2A/SemantiqueTradLangage/MiniML-Imperative-programming/_build/install/default/lib"
 #        ; "OCAMLTOP_INCLUDE_PATH" :
-#            "/home/edimaria/2A/SemantiqueTradLangage/MiniML/_build/install/default/lib/toplevel"
+#            "/home/edimaria/2A/SemantiqueTradLangage/MiniML-Imperative-programming/_build/install/default/lib/toplevel"
 #        ; "OCAML_COLOR" : "always"
 #        ; "OPAMCOLOR" : "always"
 #        }

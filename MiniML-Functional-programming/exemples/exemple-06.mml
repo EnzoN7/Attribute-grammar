@@ -1,5 +1,5 @@
 letrec fact = 
- fun n -> if (not (n = 0))
-          then n *((fact) (n-1))
-          else 1
+ fun n -> if (n = 0 )
+          then 1
+          else n *((fact) (n-1))
  in (fact) 5

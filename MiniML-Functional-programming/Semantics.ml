@@ -126,9 +126,9 @@ let rec value_of_expr expr env =
     (* Fonction d'évaluation d'un identificateur *)
     ruleAccess env name =
     match (lookfor name env) with
-    | NotFound -> (ErrorValue (UnknownIdentError name))
-    (* A compléter lors de l'ajout de la fermeture pour les définitions récursives *)
-    | (Found value) -> value
+    | NotFound -> ErrorValue (UnknownIdentError name)
+    | Found (FrozenValue (fexpr,fenv)) -> value_of_expr fexpr fenv
+    | Found value -> value
 
   (* ========================================================*)
   and
@@ -201,8 +201,11 @@ let rec value_of_expr expr env =
     (* Fonction d'évaluation d'un let *)
     (* "let ident = bvalue in bin" *)
     ruleLet _env _ident _bvalue _bin =
-    (* A compléter *)
-    (ErrorValue UndefinedExpressionError)
+      let bval = value_of_expr _bvalue _env
+      in
+        match bval with
+        | ErrorValue _ as res -> res
+        | _ -> value_of_expr _bin ((_ident,bval)::_env)
 
   (* ========================================================*)
   and
@@ -210,16 +213,22 @@ let rec value_of_expr expr env =
     (* Fonction d'évaluation d'une conditionnelle *)
     (* "if cond then bthen else belse" *)
     ruleIf _env _cond _bthen _belse =
-    (* A compléter *)
-    (ErrorValue UndefinedExpressionError)
+      let cval = value_of_expr _cond _env
+      in
+        match cval with
+        | BooleanValue cond ->
+          if cond then
+            value_of_expr _bthen _env
+          else
+            value_of_expr _belse _env
+        | ErrorValue _ as res -> res
+        | _ -> ErrorValue TypeMismatchError
 
   (* ========================================================*)
   and
     (* ruleFunction : ast -> environment -> valueType *)
     (* Fonction d'évaluation d'une fonction *)
-    ruleFunction _env _expr =
-    (* A compléter *)
-    (ErrorValue UndefinedExpressionError)
+    ruleFunction _env _expr = FrozenValue (_expr,_env)
 
   (* Appel par nom *)
   (* ========================================================*)
@@ -227,17 +236,36 @@ let rec value_of_expr expr env =
     (* ruleCallByName : environment -> ast -> ast -> valueType *)
     (* Fonction d'évaluation d'un appel de fonction avec passage de paramètre par nom*)
     ruleCallByName _env _fexpr _pexpr =
-    (* A compléter *)
-    (ErrorValue UndefinedExpressionError)
+    let pval = value_of_expr _pexpr _env
+    in
+      match pval with
+      | ErrorValue _ as res -> res
+      | _ ->
+        let fval = value_of_expr _fexpr _env
+        in
+          match fval with
+          | FrozenValue (FunctionNode (fpar,fbody),fenv) ->
+            value_of_expr fbody ((fpar,pval)::fenv)
+          | ErrorValue _ as result -> result
+          | _ -> ErrorValue TypeMismatchError
 
   (* ========================================================*)
   and
     (* ruleCallByValue : environment -> ast -> ast -> valueType *)
     (* Fonction d'évaluation d'un appel de fonction avec passage de paramètre par valeur*)
     ruleCallByValue _env _fexpr _pexpr =
-    (* Appel par valeur *)
-    (* A compléter *)
-    (ErrorValue UndefinedExpressionError)
+      let pval = value_of_expr _pexpr _env
+      in
+        match pval with
+        | ErrorValue _ as res -> res
+        | _ ->
+          let fval = value_of_expr _fexpr _env
+          in
+            match fval with
+            | FrozenValue (FunctionNode (fpar,fbody),fenv) ->
+              value_of_expr fbody ((fpar,pval)::fenv)
+            | ErrorValue _ as result -> result
+            | _ -> ErrorValue TypeMismatchError
 
   (* ========================================================*)
   and
@@ -245,8 +273,7 @@ let rec value_of_expr expr env =
     (* Fonction d'évaluation d'un let rec*)
     (* "letrec ident = bvalue in bin" *)
     ruleLetrec _env _ident _bvalue _bin =
-    (* A compléter *)
-    (ErrorValue UndefinedExpressionError)
+      value_of_expr _bin ((_ident,(FrozenValue ((LetrecNode (_ident,_bvalue,_bvalue)),_env)))::_env)
 
 
 
