@@ -57,7 +57,23 @@ let%test _ = ( getValeur (miniML "../../exemples/exemple-15.mml") = (BooleanValu
 let%test _ = ( getType (miniML "../../exemples/exemple-15.mml") = BooleanType )
 
 (*
-  Autres tests
+  Tests sur les pointeurs
+*)
+
+let%test _ = ( getValeur (miniML "../../exemples/exemple-16.mml") = ReferenceValue "ref@1" )
+let%test _ = ( getType (miniML "../../exemples/exemple-16.mml") = ReferenceType BooleanType )
+
+let%test _ = ( getValeur (miniML "../../exemples/exemple-17.mml") = ReferenceValue "ref@1" )
+let%test _ = ( getType (miniML "../../exemples/exemple-17.mml") = ReferenceType IntegerType )
+
+let%test _ = ( getValeur (miniML "../../exemples/exemple-21.mml") = ReferenceValue "ref@1")
+let%test _ = ( getType (miniML "../../exemples/exemple-21.mml") = ReferenceType (FunctionType (VariableType (ref UnknownType,2),VariableType (ref UnknownType,2))) )
+
+let%test _ = ( getValeur (miniML "../../exemples/exemple-22.mml") = ReferenceValue "ref@2")
+let%test _ = ( getType (miniML "../../exemples/exemple-22.mml") = ReferenceType UnitType )
+
+(*
+  Tests sur les FrozenValue et les NullValue
 *)
 
 let%test _ = ( getValeur (miniML "../../exemples/exemple-09.mml") = (FrozenValue (FunctionNode ("x",AccessNode "x"),[])) )
@@ -66,11 +82,9 @@ let%test _ = ( getType (miniML "../../exemples/exemple-09.mml") = FunctionType (
 let%test _ = ( getValeur (miniML "../../exemples/exemple-13.mml") = NullValue )
 let%test _ = ( getType (miniML "../../exemples/exemple-13.mml") = UnitType )
 
-let%test _ = ( getValeur (miniML "../../exemples/exemple-16.mml") = ReferenceValue "ref@1" )
-let%test _ = ( getType (miniML "../../exemples/exemple-16.mml") = ReferenceType BooleanType )
-
-let%test _ = ( getValeur (miniML "../../exemples/exemple-17.mml") = ReferenceValue "ref@1" )
-let%test _ = ( getType (miniML "../../exemples/exemple-17.mml") = ReferenceType IntegerType )
+(*
+  Tests sur les erreurs
+*)
 
 let%test _ = ( getValeur (miniML "../../exemples/exemple-18.mml") = ErrorValue TypeMismatchError )
 let%test _ = ( getType (miniML "../../exemples/exemple-18.mml") = ErrorType )
