@@ -24,6 +24,9 @@ import fr.n7.stl.block.ast.scope.*;
 import fr.n7.stl.block.ast.type.*;
 import fr.n7.stl.block.ast.type.declaration.*;
 import fr.n7.stl.util.*;
+import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.tam.ast.impl.TAMFactoryImpl;
+import fr.n7.stl.tam.ast.Register;
 
 /* Variables partagées dans les actions de l'analyseur syntaxique. */
 parser code {:
@@ -118,6 +121,16 @@ Program ::= UL_Identificateur:nom Bloc:bloc
 					System.out.println("Collect succeeded : " + tds);
 					if (bloc.resolve(tds)) {
 						System.out.println("Resolve succeeded.");
+						if (bloc.checkType()) {
+							System.out.println("CheckType succeeded");
+							bloc.allocateMemory(Register.SB, 0);
+							System.out.println("Memory Allocation succeeded");
+							TAMFactory factory = new TAMFactoryImpl();
+							//bloc.getCode(factory);
+							System.out.println(bloc.getCode(factory));
+						} else {
+							System.out.println("CheckType succeeded");
+						}
 					} else {
 						System.out.println("Resolve failed." + tds);
 					}
@@ -370,7 +383,14 @@ Instruction ::= Declaration:declaration
 				{:
 					RESULT = new Return( expression);
 				:}
-			;
+			| UL_Si UL_Parenthese_Ouvrante Expression:condition UL_Parenthese_Fermante Bloc:alors
+				{: 
+					RESULT = new Conditional( condition, alors); 
+				:}
+			| UL_Tant_Que UL_Parenthese_Ouvrante Expression:condition UL_Parenthese_Fermante Bloc:corps
+				{:
+					RESULT = new Repetition(condition, corps); 
+				:}		;
 			
 Expressions ::= Expressions:expressions UL_Virgule Expression:expression 	
 				{:

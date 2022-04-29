@@ -54,7 +54,7 @@ public class UnaryExpression implements Expression {
 	 */
 	@Override
 	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
-		return this.parameter.fullResolve(_scope);
+		return true;
 	}
 	
 	/* (non-Javadoc)

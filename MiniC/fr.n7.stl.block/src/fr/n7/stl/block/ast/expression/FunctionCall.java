@@ -13,6 +13,8 @@ import fr.n7.stl.block.ast.scope.HierarchicalScope;
 import fr.n7.stl.block.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.tam.ast.TAMInstruction;
+import fr.n7.stl.util.Logger;
 
 /**
  * Abstract Syntax Tree node for a function call expression.
@@ -53,7 +55,7 @@ public class FunctionCall implements Expression {
 	 */
 	@Override
 	public String toString() {
-		String _result = ((this.function == null)?this.name:this.function) + "( ";
+		String _result = (/*(this.function == null)?*/this.name/*:this.function*/) + "( ";
 		Iterator<Expression> _iter = this.arguments.iterator();
 		if (_iter.hasNext()) {
 			_result += _iter.next();
@@ -69,7 +71,17 @@ public class FunctionCall implements Expression {
 	 */
 	@Override
 	public boolean collectAndBackwardResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in FunctionCall.");
+		if (_scope.knows(this.name)) {
+			this.function = (FunctionDeclaration) _scope.get(this.name);
+			System.out.println("FunctionCall collect:  "+_scope.get(this.name).toString());
+		} else {
+			Logger.error("Fonction inconnue dans collectbackward de FunctionCall pour: "+this.toString());
+		}
+		boolean ok = true;
+		for (Expression arg : this.arguments) {
+			ok = ok && arg.collectAndBackwardResolve(_scope);
+		}		
+		return ok ;
 	}
 
 	/* (non-Javadoc)
@@ -77,7 +89,7 @@ public class FunctionCall implements Expression {
 	 */
 	@Override
 	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in FunctionCall.");
+		return true;
 	}
 	
 	/* (non-Javadoc)
@@ -85,7 +97,7 @@ public class FunctionCall implements Expression {
 	 */
 	@Override
 	public Type getType() {
-		throw new SemanticsUndefinedException( "Semantics getType is undefined in FunctionCall.");
+		return this.function.getType();
 	}
 
 	/* (non-Javadoc)
@@ -93,7 +105,9 @@ public class FunctionCall implements Expression {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException( "Semantics getCode is undefined in FunctionCall.");
+		Fragment varDeclFrag = _factory.createFragment();
+//		varDeclFrag.add((TAMInstruction) _factory.createLoad(this.function.get, this.offset, this.value.getType().length()));
+		return varDeclFrag;
 	}
 
 }

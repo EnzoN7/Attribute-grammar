@@ -51,8 +51,8 @@ public class Couple implements Expression {
 	 */
 	@Override
 	public boolean collectAndBackwardResolve(HierarchicalScope<Declaration> _scope) {
-		boolean _first = this.first.fullResolve(_scope);
-		boolean _second = this.second.fullResolve(_scope);
+		boolean _first = this.first.collectAndBackwardResolve(_scope);
+		boolean _second = this.second.collectAndBackwardResolve(_scope);
 		return _first && _second;
 	}
 	
@@ -61,9 +61,7 @@ public class Couple implements Expression {
 	 */
 	@Override
 	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
-		boolean _first = this.first.fullResolve(_scope);
-		boolean _second = this.second.fullResolve(_scope);
-		return _first && _second;
+		return true;
 	}
 
 	/* (non-Javadoc)

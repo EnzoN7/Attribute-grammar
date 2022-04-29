@@ -12,6 +12,8 @@ import fr.n7.stl.block.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.tam.ast.TAMInstruction;
+import fr.n7.stl.util.Logger;
 
 /**
  * Abstract Syntax Tree node for a variable declaration instruction.
@@ -103,10 +105,11 @@ public class VariableDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean collectAndBackwardResolve(HierarchicalScope<Declaration> _scope) {
-		Declaration constant = new ConstantDeclaration(this.name, this.type, this.value);
-		if (_scope.accepts(constant)) {
-			_scope.register(constant);
-			return true;
+		Declaration decl = new VariableDeclaration(this.name, this.type, this.value);
+		boolean enregistrement = this.value.collectAndBackwardResolve(_scope);
+		if (_scope.accepts(decl)) {
+			_scope.register(this);
+			return enregistrement;
 		} else {
 			return false;
 		}
@@ -117,8 +120,7 @@ public class VariableDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
-		
-		return _scope.contains(this.name); // know pour une var globale (indep des blocks), et contains pour une locale (def uniquement dans ce block)
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -126,7 +128,12 @@ public class VariableDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean checkType() {
-		throw new SemanticsUndefinedException("Semantics checkType is undefined in VariableDeclaration.");
+		if (this.value.getType().compatibleWith(this.type)) {
+			return true;
+		}
+		System.out.println("variable declaration check type, value: "+this.value.getType()+" et type: "+this.type);
+		Logger.error("Type incorrect dans la declaration de variable: "+this.toString());
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -134,7 +141,9 @@ public class VariableDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException("Semantics allocateMemory is undefined in VariableDeclaration.");
+		this.register = _register;
+		this.offset = _offset;
+		return this.offset;
 	}
 
 	/* (non-Javadoc)
@@ -142,7 +151,16 @@ public class VariableDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException("Semantics getCode is undefined in VariableDeclaration.");
+		Fragment varDeclFrag = this.value.getCode(_factory);
+		varDeclFrag.add(_factory.createPush(this.type.length()));
+		varDeclFrag.add((TAMInstruction) _factory.createStore(this.register, this.offset, this.value.getType().length()));
+		return varDeclFrag;
+	}
+
+	@Override
+	public Type returnTo(FunctionDeclaration _f) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

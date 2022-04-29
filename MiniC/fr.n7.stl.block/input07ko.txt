@@ -1,0 +1,11 @@
+test {
+	int i = 1;
+	int j = 0;
+	String k = "coucou";
+	boolean b = true;
+	if (b) {
+		i = true;
+	} else {
+		i = 3;
+	}
+}

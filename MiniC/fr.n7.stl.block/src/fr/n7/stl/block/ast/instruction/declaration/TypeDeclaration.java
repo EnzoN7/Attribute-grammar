@@ -8,6 +8,7 @@ import fr.n7.stl.block.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * Implementation of the Abstract Syntax Tree node for a type declaration.
@@ -49,7 +50,11 @@ public class TypeDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean collectAndBackwardResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in TypeDeclaration.");
+		if (_scope.contains(this.name)) {
+			Logger.error("TypeDeclaration collect error in: "+this.toString());
+		}
+		_scope.register((Declaration) this); 
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -57,7 +62,7 @@ public class TypeDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in TypeDeclaration.");
+		return true;
 	}
 
 	/**
@@ -98,6 +103,12 @@ public class TypeDeclaration implements Declaration, Instruction {
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		return _factory.createFragment();
+	}
+
+	@Override
+	public Type returnTo(FunctionDeclaration _f) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

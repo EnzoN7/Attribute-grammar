@@ -6,11 +6,17 @@ package fr.n7.stl.block.ast;
 import java.util.List;
 
 import fr.n7.stl.block.ast.instruction.Instruction;
+import fr.n7.stl.block.ast.instruction.Return;
+import fr.n7.stl.block.ast.instruction.declaration.FunctionDeclaration;
+import fr.n7.stl.block.ast.instruction.declaration.ParameterDeclaration;
 import fr.n7.stl.block.ast.scope.Declaration;
 import fr.n7.stl.block.ast.scope.HierarchicalScope;
+import fr.n7.stl.block.ast.scope.SymbolTable;
+import fr.n7.stl.block.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.tam.ast.impl.FragmentImpl;
 
 /**
  * Represents a Block node in the Abstract Syntax Tree node for the Bloc language.
@@ -57,12 +63,14 @@ public class Block {
 	 * allowed.
 	 */
 	public boolean collect(HierarchicalScope<Declaration> _scope) {
+		HierarchicalScope<Declaration> _scope2 = new SymbolTable(_scope);
 		for (Instruction instruction: this.instructions) {
-			Boolean test = instruction.collectAndBackwardResolve(_scope);
+			Boolean test = instruction.collectAndBackwardResolve(_scope2);
 			if (!test) {
 				return false;
 			}
 		}
+		_scope = _scope2;
 		return true;
 	}
 	
@@ -74,12 +82,14 @@ public class Block {
 	 * block have been previously defined.
 	 */
 	public boolean resolve(HierarchicalScope<Declaration> _scope) {
+		HierarchicalScope<Declaration> _scope2 = new SymbolTable(_scope);
 		for (Instruction instruction: this.instructions) {
-			Boolean test = instruction.fullResolve(_scope);
+			Boolean test = instruction.fullResolve(_scope2);
 			if (!test) {
 				return false;
 			}
 		}
+		_scope = _scope2;
 		return true;
 	}
 
@@ -88,7 +98,27 @@ public class Block {
 	 * @return Synthesized True if the instruction is well typed, False if not.
 	 */	
 	public boolean checkType() {
-		throw new SemanticsUndefinedException("Semantics checkType is undefined in Block.");
+		for (Instruction instruction: this.instructions) {
+			System.out.println("Block checktype: "+instruction);
+			if (!instruction.checkType()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean checkType(Type type) {
+		boolean ok = true;
+		for (Instruction instruction: this.instructions) {
+			System.out.println("Block checktype: "+instruction);
+			if (instruction instanceof Return) {
+				ok = ok && ((Return) instruction).checkType(type);
+			}
+			if (!instruction.checkType()) {
+				return false;
+			}
+		}
+		return ok;
 	}
 
 	/**
@@ -98,7 +128,9 @@ public class Block {
 	 * @param _offset Inherited Current offset for the address of the variables.
 	 */	
 	public void allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException("Semantics allocateMemory is undefined in Block.");
+		for (Instruction instruction: this.instructions) {
+			_offset += instruction.allocateMemory(_register, _offset);
+		}
 	}
 
 	/**
@@ -108,7 +140,30 @@ public class Block {
 	 * @return Synthesized AST for the generated TAM code.
 	 */
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException("Semantics generateCode is undefined in Block.");
+//		Fragment blocFrag = new FragmentImpl();
+//		for (Instruction instruction: this.instructions) {
+//			blocFrag.append( instruction.getCode(_factory));
+//		}
+//		return blocFrag;
+		
+//		Fragment _result = _factory.createFragment();
+//		_result.add(_factory.createLoad(
+//				this.declaration.getRegister(), 
+//				this.declaration.getOffset(),
+//				this.declaration.getType().length()));
+//		_result.addComment(this.toString());
+//		return _result;
+		
+		Fragment blocFrag = _factory.createFragment();
+		for (Instruction instruction: this.instructions) {
+			blocFrag.append(instruction.getCode(_factory));
+		}
+		return blocFrag;
+	}
+
+	public Type returnTo(FunctionDeclaration functionDeclaration) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

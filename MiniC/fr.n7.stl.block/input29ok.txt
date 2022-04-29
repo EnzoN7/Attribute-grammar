@@ -1,0 +1,32 @@
+test {
+	int i = 1;
+	String k = "coucou";
+	boolean b = true;
+	if (b) {
+		i = 2;
+	} else {
+		i = 3;
+	}
+	print i;
+	
+	while (b) {
+		int w = 8;
+	}
+	print k;
+
+	int v = 1;
+	int *ptr = &v;
+	int j = *ptr;
+	int t[] = new int[5];
+	
+	<int, String> c = {47, "couple"};
+	
+	int succ(int x) {
+		int res = x + 1;
+		return res;
+	}
+	
+	typedef enum reponse {OUI, NON} Reponse;
+	struct Point {int x; int y;} coordonnee = {0, 0};
+	typedef enum naturel{UN, DEUX, TROIS, QUATRE, CINQ} nat;
+}

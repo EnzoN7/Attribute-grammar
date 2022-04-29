@@ -68,11 +68,7 @@ public class Sequence implements Expression {
 	 */
 	@Override
 	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
-		boolean _result = true;
-		for (Expression _value : this.values) {
-			_result = _result && _value.fullResolve(_scope);
-		}
-		return _result;
+		return true;
 	}
 	
 	/* (non-Javadoc)

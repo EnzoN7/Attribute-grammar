@@ -83,7 +83,7 @@ public class ConstantDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public boolean collectAndBackwardResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in ConstantDeclaration.");
+		return this.value.collectAndBackwardResolve(_scope);
 	}
 	
 	/* (non-Javadoc)
@@ -91,7 +91,7 @@ public class ConstantDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in ConstantDeclaration.");
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -99,7 +99,7 @@ public class ConstantDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public boolean checkType() {
-		throw new SemanticsUndefinedException( "Semantics checkType is undefined in ConstantDeclaration.");
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -107,7 +107,7 @@ public class ConstantDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException( "Semantics allocateMemory is undefined in ConstantDeclaration.");
+		return this.type.length();
 	}
 
 	/* (non-Javadoc)
@@ -116,6 +116,12 @@ public class ConstantDeclaration implements Instruction, Declaration {
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		throw new SemanticsUndefinedException( "Semantics getCode is undefined in ConstantDeclaration.");
+	}
+
+	@Override
+	public Type returnTo(FunctionDeclaration _f) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

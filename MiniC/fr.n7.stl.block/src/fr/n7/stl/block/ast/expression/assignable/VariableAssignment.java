@@ -11,6 +11,7 @@ import fr.n7.stl.block.ast.scope.HierarchicalScope;
 import fr.n7.stl.block.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.tam.ast.TAMInstruction;
 import fr.n7.stl.util.Logger;
 
 /**
@@ -35,16 +36,9 @@ public class VariableAssignment extends AbstractIdentifier implements Assignable
 	 */
 	@Override
 	public boolean collectAndBackwardResolve(HierarchicalScope<Declaration> _scope) {
-		return true;
-	}
-	
-	/* (non-Javadoc)
-	 * @see fr.n7.stl.block.ast.expression.AbstractIdentifier#resolve(fr.n7.stl.block.ast.scope.HierarchicalScope)
-	 */
-	@Override
-	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
 		if (((HierarchicalScope<Declaration>)_scope).knows(this.name)) {
 			Declaration _declaration = _scope.get(this.name);
+
 			if (_declaration instanceof VariableDeclaration) {
 				this.declaration = ((VariableDeclaration) _declaration);
 				return true;
@@ -59,11 +53,24 @@ public class VariableAssignment extends AbstractIdentifier implements Assignable
 	}
 	
 	/* (non-Javadoc)
+	 * @see fr.n7.stl.block.ast.expression.AbstractIdentifier#resolve(fr.n7.stl.block.ast.scope.HierarchicalScope)
+	 */
+	@Override
+	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
+		return true;
+	}
+	
+	/* (non-Javadoc)
 	 * @see fr.n7.stl.block.ast.impl.VariableUseImpl#getType()
 	 */
 	@Override
 	public Type getType() {
-		throw new SemanticsUndefinedException("Semantics getType undefined in VariableAssignment.");
+		if (this.declaration.getType() == null) {
+			Logger.error("The declaration for " + this.name + " is of the wrong kind.");
+			return null;
+		} else {
+			return this.declaration.getType();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -71,7 +78,9 @@ public class VariableAssignment extends AbstractIdentifier implements Assignable
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException("Semantics getCode undefined in VariableAssignment.");
+		Fragment varAssiFrag = _factory.createFragment();
+		varAssiFrag.add((TAMInstruction) this.declaration.getCode(_factory));
+		return varAssiFrag;
 	}
 
 }

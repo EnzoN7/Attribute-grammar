@@ -6,12 +6,15 @@ package fr.n7.stl.block.ast.instruction;
 import fr.n7.stl.block.ast.SemanticsUndefinedException;
 import fr.n7.stl.block.ast.expression.Expression;
 import fr.n7.stl.block.ast.expression.assignable.AssignableExpression;
+import fr.n7.stl.block.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.block.ast.scope.Declaration;
 import fr.n7.stl.block.ast.scope.HierarchicalScope;
 import fr.n7.stl.block.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.tam.ast.TAMInstruction;
+import fr.n7.stl.util.Logger;
 
 /**
  * Implementation of the Abstract Syntax Tree node for an array type.
@@ -48,7 +51,7 @@ public class Assignment implements Instruction, Expression {
 	 */
 	@Override
 	public boolean collectAndBackwardResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in Assignment.");
+		return this.assignable.collectAndBackwardResolve(_scope) && this.value.collectAndBackwardResolve(_scope);
 	}
 
 	/* (non-Javadoc)
@@ -56,7 +59,7 @@ public class Assignment implements Instruction, Expression {
 	 */
 	@Override
 	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in Assignment.");
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -64,7 +67,7 @@ public class Assignment implements Instruction, Expression {
 	 */
 	@Override
 	public Type getType() {
-		throw new SemanticsUndefinedException( "Semantics getType is undefined in Assignment.");
+		return this.value.getType();
 	}
 
 	/* (non-Javadoc)
@@ -72,7 +75,13 @@ public class Assignment implements Instruction, Expression {
 	 */
 	@Override
 	public boolean checkType() {
-		throw new SemanticsUndefinedException( "Semantics checkType is undefined in Assignment.");
+		Type t = this.value.getType();
+		if (!(this.assignable.getType().compatibleWith(t))) {
+			System.out.println("assignement check type, assignable: "+this.assignable.getType()+" et value: "+t);
+			Logger.error("Erreur de type dans l'assignement de: "+this.toString());
+			return false;
+		}
+		return true;
 	}
 	
 	/* (non-Javadoc)
@@ -80,7 +89,7 @@ public class Assignment implements Instruction, Expression {
 	 */
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException( "Semantics allocateMemory is undefined in Assignment.");
+		return this.value.getType().length();
 	}
 
 	/* (non-Javadoc)
@@ -88,7 +97,16 @@ public class Assignment implements Instruction, Expression {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException( "Semantics getCode is undefined in Assignment.");
+		Fragment assiFrag = _factory.createFragment();
+		assiFrag.add((TAMInstruction) this.assignable.getCode(_factory));
+		assiFrag.add((TAMInstruction) this.value.getCode(_factory));
+		return assiFrag;
+	}
+
+	@Override
+	public Type returnTo(FunctionDeclaration _f) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

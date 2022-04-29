@@ -1,0 +1,22 @@
+test {
+	int i = 1;
+	String k = "coucou";
+	boolean b = true;
+	if (b) {
+		i = 2;
+	} else {
+		i = 3;
+	}
+	print i;
+	
+	while (b) {
+		int w = 8;
+	}
+	print k;
+
+	int v = 1;
+	int *ptr = &v;
+	int j = *ptr;
+	int t[] = new int[5];
+	int toto = t[3];
+}

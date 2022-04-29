@@ -71,9 +71,7 @@ public class BinaryExpression implements Expression {
 	 */
 	@Override
 	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
-		boolean _left = this.left.fullResolve(_scope);
-		boolean _right = this.right.fullResolve(_scope);
-		return _left && _right;
+		return true;
 	}
 
 	/* (non-Javadoc)

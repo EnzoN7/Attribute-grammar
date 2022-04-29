@@ -11,10 +11,13 @@ import fr.n7.stl.block.ast.SemanticsUndefinedException;
 import fr.n7.stl.block.ast.instruction.Instruction;
 import fr.n7.stl.block.ast.scope.Declaration;
 import fr.n7.stl.block.ast.scope.HierarchicalScope;
+import fr.n7.stl.block.ast.scope.SymbolTable;
+import fr.n7.stl.block.ast.type.AtomicType;
 import fr.n7.stl.block.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * Abstract Syntax Tree node for a function declaration.
@@ -100,7 +103,18 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public boolean collectAndBackwardResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in FunctionDeclaration.");
+		for (ParameterDeclaration p: parameters) {
+			_scope.register(p);
+		}
+		Declaration v = new FunctionDeclaration(this.name, this.type, this.parameters, this.body);
+		boolean ok = _scope.accepts(v);
+		if (_scope.contains(this.name)) {
+			Logger.error("Error dans function declaration dans collect pour: "+this.toString());
+		} else if (ok) {
+			_scope.register((Declaration) this);
+		}
+		
+		return this.body.collect(_scope) && ok;
 	}
 	
 	/* (non-Javadoc)
@@ -108,7 +122,7 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in FunctionDeclaration.");
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -116,7 +130,13 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public boolean checkType() {
-		throw new SemanticsUndefinedException( "Semantics checkType is undefined in FunctionDeclaration.");
+		if (this.body.checkType(this.type)) {
+			return true;
+		} else {
+			Logger.error("FunctionDeclaration checkType erreur pour: "+this.toString());
+			return false;
+		}
+//		
 	}
 
 	/* (non-Javadoc)
@@ -124,7 +144,12 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException( "Semantics allocateMemory is undefined in FunctionDeclaration.");
+		int offset = 0;
+		for (ParameterDeclaration p : this.parameters) {
+			offset += p.getType().length();
+		}
+		body.allocateMemory(_register, offset);
+		return 0;
 	}
 
 	/* (non-Javadoc)
@@ -133,6 +158,15 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		throw new SemanticsUndefinedException( "Semantics getCode is undefined in FunctionDeclaration.");
+	}
+	
+	@Override
+	public Type returnTo(FunctionDeclaration _f) {
+		// TODO Auto-generated method stub
+		if (this.type == null) {
+			return AtomicType.VoidType;
+		}
+		return this.type;
 	}
 
 }

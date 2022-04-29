@@ -5,8 +5,10 @@ package fr.n7.stl.block.ast.instruction;
 
 import fr.n7.stl.block.ast.SemanticsUndefinedException;
 import fr.n7.stl.block.ast.expression.Expression;
+import fr.n7.stl.block.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.block.ast.scope.Declaration;
 import fr.n7.stl.block.ast.scope.HierarchicalScope;
+import fr.n7.stl.block.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
@@ -29,7 +31,7 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public String toString() {
-		return "return " + this.value + ";\n";
+		return "return " + this.value.toString() + ";\n";
 	}
 	
 	/* (non-Javadoc)
@@ -37,7 +39,7 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public boolean collectAndBackwardResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in Return.");
+		return this.value.collectAndBackwardResolve(_scope);
 	}
 	
 	/* (non-Javadoc)
@@ -45,7 +47,7 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public boolean fullResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in Return.");
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -53,7 +55,12 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public boolean checkType() {
-		throw new SemanticsUndefinedException("Semantics checkType undefined in Return.");
+		return true;
+	}
+	
+	public boolean checkType(Type type) {
+		// TODO Auto-generated method stub
+		return this.value.getType() == type;
 	}
 
 	/* (non-Javadoc)
@@ -61,7 +68,7 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException("Semantics allocateMemory undefined in Return.");
+		return this.value.getType().length();
 	}
 
 	/* (non-Javadoc)
@@ -72,4 +79,9 @@ public class Return implements Instruction {
 		throw new SemanticsUndefinedException("Semantics getCode undefined in Return.");
 	}
 
+	@Override
+	public Type returnTo(FunctionDeclaration _f) {
+		// TODO Auto-generated method stub
+		return this.value.getType();
+	}
 }
